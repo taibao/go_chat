@@ -1,8 +1,14 @@
 package main
 
-import "go_chat/router"
+import (
+	"go_chat/router"
+	"go_chat/utils"
+)
 
 func main() {
+	utils.InitConfig()
+	utils.InitMysql()
+
 	r := router.Router()
 	err := r.Run(":1234")
 	if err != nil {

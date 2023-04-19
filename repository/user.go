@@ -2,27 +2,25 @@ package repository
 
 import (
 	"go_chat/models"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"time"
+	"go_chat/utils"
 )
 
-func GetUserInfo() {
-	db, err := gorm.Open(mysql.Open("root:123123@tcp(localhost:3306)/go_chat?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-
+func GetUserInfo() models.UserBasic {
+	db := utils.DB
+	user := models.UserBasic{}
+	db.Where("id", 1).Find(&user)
+	//
+	return user
 	// 迁移 schema
-	db.AutoMigrate(&models.UserBasic{})
+	//db.AutoMigrate(&models.UserBasic{})
 
 	// Create
-	user := &models.UserBasic{}
-	user.Name = "vitas"
-	user.LogOutTime = time.Now().Local()
-	user.LoginTime = time.Now().Local()
-	user.HeartbeatTime = time.Now().Local()
-	db.Create(user)
+	//user := &models.UserBasic{}
+	//user.Name = "vitas"
+	//user.LogOutTime = time.Now().Local()
+	//user.LoginTime = time.Now().Local()
+	//user.HeartbeatTime = time.Now().Local()
+	//db.Create(user)
 	//db.Where("Name = ?", "vitas").First(user)
 	//fmt.Println("输出第一条记录", user)
 
@@ -38,4 +36,10 @@ func GetUserInfo() {
 	//
 	//// Delete - 删除 product
 	//db.Delete(user, 1)
+}
+
+func GetUserList() []models.UserBasic {
+	user := make([]models.UserBasic, 2)
+	utils.DB.Find(&user)
+	return user
 }
