@@ -7,6 +7,12 @@ import (
 	"net/http"
 )
 
+// GetUserInfo
+// @Tags 获取用户详情
+// @Accept json
+// @Produce json
+// @Success 200 {string} welcome
+// @Router /get.user_info [post]
 func GetUserInfo(c *gin.Context) {
 	user := repository.GetUserInfo()
 	fmt.Println("获取用户信息", user)
