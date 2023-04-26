@@ -11,7 +11,7 @@ import (
 // @Tags 获取用户详情
 // @Accept json
 // @Produce json
-// @Success 200 {string} welcome
+// @Success 200 {obj} welcome
 // @Router /get.user_info [post]
 func GetUserInfo(c *gin.Context) {
 	user := repository.GetUserInfo()
@@ -24,6 +24,12 @@ func GetUserInfo(c *gin.Context) {
 	})
 }
 
+// GetUserList
+// @Tags 获取用户列表
+// @Accept json
+// @Produce json
+// @Success 200 {obj} welcome
+// @Router /get.user_list [post]
 func GetUserList(c *gin.Context) {
 	user := repository.GetUserList()
 	fmt.Println("获取用户信息", user)
