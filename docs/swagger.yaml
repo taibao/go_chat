@@ -1,0 +1,57 @@
+info:
+  contact: {}
+paths:
+  /get.add_user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 用户名
+        in: query
+        name: name
+        type: string
+      - description: 密码
+        in: query
+        name: password
+        type: string
+      - description: 确认密码
+        in: query
+        name: re_password
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: code","message"}
+          schema:
+            type: obj
+      summary: 新增用户
+      tags:
+      - 用户模块
+  /get.user_info:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: obj
+      tags:
+      - 获取用户详情
+  /get.user_list:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: obj
+      tags:
+      - 获取用户列表
+swagger: "2.0"
