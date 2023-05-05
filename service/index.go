@@ -79,5 +79,58 @@ func CreateUser(c *gin.Context) {
 		"data":    "",
 		"message": "创建成功",
 	})
+}
 
+// DelUser
+// @Summary 删除用户
+// @Tags 用户模块
+// @Accept json
+// @param id query string false "1" 用户id
+// @Produce json
+// @Success 200 {obj} json{"code","message"}
+// @Router /get.del_user [post]
+func DelUser(c *gin.Context) {
+	var userParams request.DelUserParams
+	if err := c.BindJSON(&userParams); err != nil {
+		//返回错误信息
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var user models.UserBasic
+	user.ID = userParams.Id
+	fmt.Println("user", user)
+	repository.DelUser(&user)
+	c.JSON(http.StatusOK, gin.H{
+		"data":    "",
+		"message": "删除成功",
+	})
+}
+
+// UpdateUser
+// @Summary 删除用户
+// @Tags 用户模块
+// @Accept json
+// @param id query string false "1" 用户id
+// @Produce json
+// @Success 200 {obj} json{"code","message"}
+// @Router /get.del_user [post]
+func UpdateUser(c *gin.Context) {
+	var userParams request.AddUserParams
+	if err := c.BindJSON(&userParams); err != nil {
+		//返回错误信息
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	var user models.UserBasic
+	user.ID = userParams.Id
+	user.Phone = userParams.Phone
+	user.Name = userParams.Name
+	fmt.Println("user", user)
+	repository.UpdateUser(&user)
+	c.JSON(http.StatusOK, gin.H{
+		"data":    "",
+		"message": "更新成功",
+	})
 }

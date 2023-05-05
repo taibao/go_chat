@@ -48,3 +48,13 @@ func CreateUser(user *models.UserBasic) bool {
 	utils.DB.Create(user)
 	return true
 }
+
+func DelUser(user *models.UserBasic) bool {
+	utils.DB.Delete(user)
+	return true
+}
+
+func UpdateUser(user *models.UserBasic) bool {
+	utils.DB.Save(user)
+	return true
+}
