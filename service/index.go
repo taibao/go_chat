@@ -116,17 +116,13 @@ func DelUser(c *gin.Context) {
 // @Success 200 {obj} json{"code","message"}
 // @Router /get.del_user [post]
 func UpdateUser(c *gin.Context) {
-	var userParams request.AddUserParams
-	if err := c.BindJSON(&userParams); err != nil {
+	var user models.UserBasic
+	if err := c.BindJSON(&user); err != nil {
 		//返回错误信息
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	var user models.UserBasic
-	user.ID = userParams.Id
-	user.Phone = userParams.Phone
-	user.Name = userParams.Name
 	fmt.Println("user", user)
 	repository.UpdateUser(&user)
 	c.JSON(http.StatusOK, gin.H{
