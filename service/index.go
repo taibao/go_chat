@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"go_chat/models"
 	"go_chat/repository"
+	"go_chat/service/request"
 	"net/http"
 	"time"
 )
@@ -52,17 +53,22 @@ func GetUserList(c *gin.Context) {
 // @Success 200 {obj} json{"code","message"}
 // @Router /get.add_user [post]
 func CreateUser(c *gin.Context) {
-	user := models.UserBasic{}
-	user.Name = c.Query("name")
-	password := c.Query("password")
-	rePassword := c.Query("re_password")
+	var userParams request.AddUserParams
+	if err := c.BindJSON(&userParams); err != nil {
+		//返回错误信息
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
-	if password != rePassword {
+	fmt.Println("输出user", userParams.Name, userParams.Password)
+	if userParams.Password != userParams.RePassword {
 		c.JSON(-1, gin.H{
 			"message": "两次密码不一致",
 		})
 	}
-	user.Password = password
+	user := models.UserBasic{}
+	user.Name = userParams.Name
+	user.Password = userParams.Password
 	user.DeletedAt = time.Now().Local()
 	user.HeartbeatTime = time.Now().Local()
 	user.LogOutTime = time.Now().Local()
@@ -73,4 +79,5 @@ func CreateUser(c *gin.Context) {
 		"data":    "",
 		"message": "创建成功",
 	})
+
 }
