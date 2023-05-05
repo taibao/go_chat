@@ -43,3 +43,8 @@ func GetUserList() []models.UserBasic {
 	utils.DB.Find(&user)
 	return user
 }
+
+func CreateUser(user *models.UserBasic) bool {
+	utils.DB.Create(user)
+	return true
+}
