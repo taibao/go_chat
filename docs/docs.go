@@ -58,6 +58,36 @@ const docTemplate = `{
                 }
             }
         },
+        "/get.del_user": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "删除用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "1",
+                        "name": "id",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "code\",\"message\"}",
+                        "schema": {
+                            "type": "obj"
+                        }
+                    }
+                }
+            }
+        },
         "/get.user_info": {
             "post": {
                 "consumes": [

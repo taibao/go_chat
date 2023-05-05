@@ -28,6 +28,25 @@ paths:
       summary: 新增用户
       tags:
       - 用户模块
+  /get.del_user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: "1"
+        in: query
+        name: id
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: code","message"}
+          schema:
+            type: obj
+      summary: 删除用户
+      tags:
+      - 用户模块
   /get.user_info:
     post:
       consumes:
