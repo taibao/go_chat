@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"github.com/go-redis/redis"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -11,7 +12,10 @@ import (
 	"time"
 )
 
-var DB *gorm.DB
+var (
+	DB    *gorm.DB
+	Redis *redis.Client
+)
 
 func InitConfig() {
 	viper.SetConfigName("app")
@@ -40,4 +44,26 @@ func InitMysql() {
 	}
 	DB = db
 	fmt.Println("mysql数据库链接成功", DB)
+}
+
+func InitRedis() {
+	Redis = redis.NewClient(&redis.Options{
+		Addr:         viper.GetString("redis.addr"),
+		Password:     viper.GetString("redis.password"),
+		DB:           viper.GetInt("redis.DB"),
+		PoolSize:     viper.GetInt("redis.poolSize"),
+		MinIdleConns: viper.GetInt("redis.minIdleConn"),
+	})
+	fmt.Println("redis链接成功", Redis)
+	pong, err := Redis.Ping().Result()
+	if err != nil {
+		fmt.Println("链接错误", err)
+	} else {
+		fmt.Println("初始化成功", pong)
+	}
+	Redis.Set("hello", "world", 0)
+	val := Redis.Get("hello").Val()
+	fmt.Println("输出redis值", val)
+
+	return
 }
