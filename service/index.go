@@ -8,7 +8,6 @@ import (
 	"go_chat/repository"
 	"go_chat/service/request"
 	"net/http"
-	"time"
 )
 
 // GetUserInfo
@@ -70,15 +69,12 @@ func CreateUser(c *gin.Context) {
 	user := models.UserBasic{}
 	user.Name = userParams.Name
 	user.Password = userParams.Password
-	user.DeletedAt = time.Now().Local()
-	user.HeartbeatTime = time.Now().Local()
-	user.LogOutTime = time.Now().Local()
-	user.LoginTime = time.Now().Local()
 
 	res := repository.FindUserByName(user.Name)
-	if res != nil {
+	fmt.Println("查询结果", res)
+	if res.ID != 0 {
 		c.JSON(http.StatusOK, gin.H{
-			"data":    res,
+			"data":    res.ID,
 			"message": "用户已注册",
 		})
 		return

@@ -45,9 +45,10 @@ func GetUserList() []models.UserBasic {
 	return user
 }
 
-func FindUserByName(name string) *gorm.DB {
+func FindUserByName(name string) *models.UserBasic {
 	user := models.UserBasic{}
-	return utils.DB.Where("name", name).First(&user)
+	utils.DB.Where("name", name).First(&user)
+	return &user
 }
 
 func FindUserByPhone(phone string) *gorm.DB {
