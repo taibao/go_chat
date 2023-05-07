@@ -7,6 +7,8 @@ import (
 	"go_chat/models"
 	"go_chat/repository"
 	"go_chat/service/request"
+	"go_chat/utils"
+	"math/rand"
 	"net/http"
 )
 
@@ -17,7 +19,28 @@ import (
 // @Success 200 {obj} welcome
 // @Router /get.user_info [post]
 func GetUserInfo(c *gin.Context) {
-	user := repository.GetUserInfo()
+	var userParams request.AddUserParams
+	if err := c.BindJSON(&userParams); err != nil {
+		//返回错误信息
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	user := repository.FindUserByName(userParams.Name)
+	if user.ID == 0 {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1000,
+			"message": "该用户不存在",
+		})
+		return
+	}
+	//mima1
+	if !utils.ValidPassword(userParams.Password, user.Salt, user.Password) {
+		c.JSON(http.StatusOK, gin.H{
+			"code":    1001,
+			"message": "密码错误",
+		})
+		return
+	}
 	fmt.Println("获取用户信息", user)
 
 	//userStr, _ := json.Marshal(user)
@@ -68,7 +91,10 @@ func CreateUser(c *gin.Context) {
 	}
 	user := models.UserBasic{}
 	user.Name = userParams.Name
-	user.Password = userParams.Password
+	salt := fmt.Sprintf("%06d", rand.Int31())
+	user.Salt = salt
+	fmt.Println("随机盐值", salt)
+	user.Password = utils.MakePassword(userParams.Password, salt)
 
 	res := repository.FindUserByName(user.Name)
 	fmt.Println("查询结果", res)

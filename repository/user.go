@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetUserInfo() models.UserBasic {
+func Test() models.UserBasic {
 	db := utils.DB
 	user := models.UserBasic{}
 	db.Where("id", 1).Find(&user)
@@ -37,6 +37,12 @@ func GetUserInfo() models.UserBasic {
 	//
 	//// Delete - 删除 product
 	//db.Delete(user, 1)
+}
+
+func GetUserInfo(name, password string) *models.UserBasic {
+	user := models.UserBasic{}
+	utils.DB.Where("name", name).Where("password", password).First(&user)
+	return &user
 }
 
 func GetUserList() []models.UserBasic {
