@@ -45,7 +45,8 @@ func GetUserInfo(c *gin.Context) {
 
 	//userStr, _ := json.Marshal(user)
 	c.JSON(http.StatusOK, gin.H{
-		"user":    user,
+		"code":    0,
+		"data":    user,
 		"message": "ok",
 	})
 }
