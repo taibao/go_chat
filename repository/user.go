@@ -1,9 +1,11 @@
 package repository
 
 import (
+	"fmt"
 	"go_chat/models"
 	"go_chat/utils"
 	"gorm.io/gorm"
+	"time"
 )
 
 func Test() models.UserBasic {
@@ -54,6 +56,12 @@ func GetUserList() []models.UserBasic {
 func FindUserByName(name string) *models.UserBasic {
 	user := models.UserBasic{}
 	utils.DB.Where("name", name).First(&user)
+
+	//token加密
+	str := fmt.Sprintf("%d", time.Now().Unix())
+	temp := utils.Md5Encode(str)
+	utils.DB.Model(&user).Where("id = ?", user.ID).Update("identity", temp)
+
 	return &user
 }
 
