@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"github.com/asaskevich/govalidator"
 	"github.com/gin-gonic/gin"
 	"go_chat/models"
 	"go_chat/repository"
@@ -108,13 +109,16 @@ func DelUser(c *gin.Context) {
 }
 
 // UpdateUser
-// @Summary 删除用户
+// @Summary 更新用户
 // @Tags 用户模块
 // @Accept json
-// @param id query string false "1" 用户id
+// @param id formData string false "1"
+// @param name formData string false "taibao"
+// @param password formData string false "123123"
+// @param phone formData string false "123123"
 // @Produce json
 // @Success 200 {obj} json{"code","message"}
-// @Router /get.del_user [post]
+// @Router /update_user [post]
 func UpdateUser(c *gin.Context) {
 	var user models.UserBasic
 	if err := c.BindJSON(&user); err != nil {
@@ -122,11 +126,16 @@ func UpdateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-
 	fmt.Println("user", user)
+	_, err := govalidator.ValidateStruct(user)
+	if err != nil {
+		fmt.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	repository.UpdateUser(&user)
 	c.JSON(http.StatusOK, gin.H{
-		"data":    "",
+		"code":    "0",
 		"message": "更新成功",
 	})
 }

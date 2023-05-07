@@ -73,4 +73,35 @@ paths:
             type: obj
       tags:
       - 获取用户列表
+  /update_user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: "1"
+        in: formData
+        name: id
+        type: string
+      - description: taibao
+        in: formData
+        name: name
+        type: string
+      - description: "123123"
+        in: formData
+        name: password
+        type: string
+      - description: "123123"
+        in: formData
+        name: phone
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: code","message"}
+          schema:
+            type: obj
+      summary: 更新用户
+      tags:
+      - 用户模块
 swagger: "2.0"

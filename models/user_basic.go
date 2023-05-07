@@ -10,8 +10,8 @@ type UserBasic struct {
 	DeletedAt     time.Time `gorm:"column:deleted_at" db:"deleted_at" json:"deleted_at" form:"deleted_at"`
 	Name          string    `gorm:"column:name" db:"name" json:"name" form:"name"`
 	Password      string    `gorm:"column:password" db:"password" json:"password" form:"password"`
-	Phone         string    `gorm:"column:phone" db:"phone" json:"phone" form:"phone"`
-	Email         string    `gorm:"column:email" db:"email" json:"email" form:"email"`
+	Phone         string    `valid:"matches(^1[3-9]{1}\\d{9}$)" gorm:"column:phone" db:"phone" json:"phone" form:"phone"`
+	Email         string    `valid:"email" gorm:"column:email" db:"email" json:"email" form:"email"`
 	Identity      string    `gorm:"column:identity" db:"identity" json:"identity" form:"identity"`
 	ClientIp      string    `gorm:"column:client_ip" db:"client_ip" json:"client_ip" form:"client_ip"`
 	ClientPort    string    `gorm:"column:client_port" db:"client_port" json:"client_port" form:"client_port"`

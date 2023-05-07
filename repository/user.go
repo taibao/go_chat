@@ -55,6 +55,6 @@ func DelUser(user *models.UserBasic) bool {
 }
 
 func UpdateUser(user *models.UserBasic) bool {
-	utils.DB.Model(&user).Updates(models.UserBasic{Name: user.Name, Phone: user.Phone, Password: user.Password})
+	utils.DB.Model(&user).Updates(models.UserBasic{Name: user.Name, Phone: user.Phone, Password: user.Password, Email: user.Email})
 	return true
 }
