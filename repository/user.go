@@ -3,6 +3,7 @@ package repository
 import (
 	"go_chat/models"
 	"go_chat/utils"
+	"gorm.io/gorm"
 )
 
 func GetUserInfo() models.UserBasic {
@@ -44,9 +45,24 @@ func GetUserList() []models.UserBasic {
 	return user
 }
 
+func FindUserByName(name string) *gorm.DB {
+	user := models.UserBasic{}
+	return utils.DB.Where("name =", name).First(&user)
+}
+
+func FindUserByPhone(phone string) *gorm.DB {
+	user := models.UserBasic{}
+	return utils.DB.Where("phone =", phone).First(&user)
+}
+
 func CreateUser(user *models.UserBasic) bool {
 	utils.DB.Create(user)
 	return true
+}
+
+func FindUserByEmail(email string) *gorm.DB {
+	user := models.UserBasic{}
+	return utils.DB.Where("email =", email).First(&user)
 }
 
 func DelUser(user *models.UserBasic) bool {
