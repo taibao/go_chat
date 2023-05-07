@@ -76,12 +76,12 @@ func CreateUser(c *gin.Context) {
 	user.LoginTime = time.Now().Local()
 
 	res := repository.FindUserByName(user.Name)
-	fmt.Println(res)
 	if res != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"data":    res,
 			"message": "用户已注册",
 		})
+		return
 	}
 
 	repository.CreateUser(&user)
