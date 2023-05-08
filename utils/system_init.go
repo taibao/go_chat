@@ -1,8 +1,9 @@
 package utils
 
 import (
+	"context"
 	"fmt"
-	"github.com/go-redis/redis"
+	"github.com/go-redis/redis/v8"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -54,16 +55,29 @@ func InitRedis() {
 		PoolSize:     viper.GetInt("redis.poolSize"),
 		MinIdleConns: viper.GetInt("redis.minIdleConn"),
 	})
-	fmt.Println("redis链接成功", Redis)
-	pong, err := Redis.Ping().Result()
-	if err != nil {
-		fmt.Println("链接错误", err)
-	} else {
-		fmt.Println("初始化成功", pong)
-	}
-	Redis.Set("hello", "world", 0)
-	val := Redis.Get("hello").Val()
-	fmt.Println("输出redis值", val)
-
 	return
+}
+
+const (
+	PublishKey = "websocket"
+)
+
+// Publish 发布消息到redis
+func Publish(ctx context.Context, channel string, msg string) error {
+	var err error
+	fmt.Println("publish msg .....", msg)
+	err = Redis.Publish(ctx, channel, msg).Err()
+	return err
+}
+
+// Subscribe 订阅Redis消息
+func Subscribe(ctx context.Context, channel string) (string, error) {
+	sub := Redis.Subscribe(ctx, channel)
+	fmt.Println("Subscribe 。。。。", ctx)
+	msg, err := sub.ReceiveMessage(ctx)
+	if err != nil {
+		fmt.Println("err .....", err)
+	}
+	fmt.Println("Subscribe234 .....", msg.Payload)
+	return msg.Payload, err
 }
