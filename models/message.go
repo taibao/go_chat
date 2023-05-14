@@ -4,8 +4,8 @@ import "gorm.io/gorm"
 
 type Message struct {
 	gorm.Model
-	FormId   string //发送者
-	TargetId string //接受者
+	FormId   uint   //发送者
+	TargetId uint   //接受者
 	Type     string //消息类型 群聊 私聊 广播
 	Media    int    //消息类型 文字 图片音频
 	Content  string //消息内容
